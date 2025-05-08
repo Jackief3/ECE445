@@ -44,10 +44,10 @@ We pitched our project to a group of peers and Professor Gruev. We got feedback 
 Talked about revising our proposal to include future data prediction as a bonus to the project. We also talked about what sensors we planned on using for the project. We chose Digikey 480-2016-ND for the temperature because it was marked available in the ECE lab room. This is what it looks like: 
 ![image](https://github.com/user-attachments/assets/df471682-2c89-43c1-a3c0-aca3a84f1519)
 
-For the dissolved oxygen sensor, we chose Digikey 5016-EZO-DO-ND. For turbidity, we were talking about 1738-1195-ND. For the ph sensor we talked about 5016-SRV-PH-ND. For the total dissolved solids, we talked about SEN0244.
+For the dissolved oxygen sensor, we chose Digikey 5016-EZO-DO-ND. For turbidity, we were talking about 1738-1195-ND. For the ph sensor we talked about 5016-SRV-PH-ND. For the total dissolved solids, we talked about SEN0244. We also started designing the circuitry for each of the sensors. I designed the circuitry for the power system. The power system has two voltage regulators and two voltage inverters. Each of the voltage regulators are there to step down a 9V load to a 3.3V or a 5V load. The volatage inverters are there to invert the stepped down voltages to the voltages we need for the other sensors. The following is an image of the schematic for our power subsystem: 
 
-## 2025-02-23 - Group Meeting through Discord Call
-
+## 2025-02-25 - Weekly TA Meeting
+We had our weekly meeting with Rui. We gave him an update of our current project progress. Rui gave us a reminder that the first round of PCB orders are due next week on March 3rd and that on Friday, there will be TAs to help with designing the PCB. 
 
 
 
