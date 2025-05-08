@@ -41,10 +41,12 @@ With my group, we introduced the Water Quality Management system project to the 
 We pitched our project to a group of peers and Professor Gruev. We got feedback on our project proposal from both the TAs and Professor Gruev. Professor Gruev told us that our project seemed too simple and to make it more complex. Some added complexity ideas we talked about are future data prediction, be able to submerge the system in water, and make the project solar powered.
 
 ## 2025-02-23 - Group Meeting through Discord Call
-Talked about revising our proposal to include future data prediction as a bonus to the project. We also decided on the sensors we planned on using for the project. We chose Digikey 480-2016-ND for the temperature because it was marked available in the ECE lab room. This is what it looks like: 
+Talked about revising our proposal to include future data prediction as a bonus to the project. We also talked about what sensors we planned on using for the project. We chose Digikey 480-2016-ND for the temperature because it was marked available in the ECE lab room. This is what it looks like: 
 ![image](https://github.com/user-attachments/assets/df471682-2c89-43c1-a3c0-aca3a84f1519)
 
+For the dissolved oxygen sensor, we chose Digikey 5016-EZO-DO-ND. For turbidity, we were talking about 1738-1195-ND. For the ph sensor we talked about 5016-SRV-PH-ND. For the total dissolved solids, we talked about SEN0244.
 
+## 2025-02-23 - Group Meeting through Discord Call
 
 
 
