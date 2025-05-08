@@ -3,7 +3,7 @@
 - [Jackie Fang](#Jackie-Fang)
 - [2025-01-27 - Project Ideas](#2025-01-27---project-ideas)
 
-# 2025-01-27 - Project Ideas
+## 2025-01-27 - Project Ideas
 
 Haokai:
 Battlebot
