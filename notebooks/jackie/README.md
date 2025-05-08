@@ -1,9 +1,9 @@
 #Jackie Fang
 
 - [Jackie Fang](#Jackie-Fang)
+- [2025-01-27 - Project Ideas][#2025-01-27---Project-Ideas]
 
-
-1-27-25 - Project Ideas
+#2025-01-27 - Project Ideas
 
 Haokai:
 Battlebot
