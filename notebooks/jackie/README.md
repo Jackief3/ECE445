@@ -3,24 +3,47 @@
 - [Jackie Fang](#Jackie-Fang)
 - [2025-01-27 - Project Ideas](#2025-01-27---Project-Ideas)
 - [2025-01-29 - WebBoard Post](#2025-01-29---WebBoard-Post)
-- [2025-01-27 - Project Ideas](#2025-01-27---project-ideas)
-- [2025-01-27 - Project Ideas](#2025-01-27---project-ideas)
-- [2025-01-27 - Project Ideas](#2025-01-27---project-ideas)
-- [2025-01-27 - Project Ideas](#2025-01-27---project-ideas)
-- [2025-01-27 - Project Ideas](#2025-01-27---project-ideas)
-- [2025-01-27 - Project Ideas](#2025-01-27---project-ideas)
-- [2025-01-27 - Project Ideas](#2025-01-27---project-ideas)
-- [2025-01-27 - Project Ideas](#2025-01-27---project-ideas)
-- [2025-01-27 - Project Ideas](#2025-01-27---project-ideas)
-- [2025-01-27 - Project Ideas](#2025-01-27---project-ideas)
-- [2025-01-27 - Project Ideas](#2025-01-27---project-ideas)
-- [2025-01-27 - Project Ideas](#2025-01-27---project-ideas)
-- [2025-01-27 - Project Ideas](#2025-01-27---project-ideas)
-- [2025-01-27 - Project Ideas](#2025-01-27---project-ideas)
-- [2025-01-27 - Project Ideas](#2025-01-27---project-ideas)
-- [2025-01-27 - Project Ideas](#2025-01-27---project-ideas)
-- [2025-01-27 - Project Ideas](#2025-01-27---project-ideas)
-- 
+- [2025-02-01 - Initial WebBoard Idea Post](#2025-02-01---Initial-WebBoard-Idea-Post)
+- [2025-02-03 - Edit to WebBoard Idea Post](#2025-02-03---Edit-to-WebBoard-Idea-Post)
+- [2025-02-05 - Final Edit to WebBoard Idea Post](#2025-02-05---Final-Edit-to-WebBoard-Idea-Post)
+- [2025-02-08 - Team Contract and Project Proposal](#2025-02-08---Team-Contract-and-Project-Proposal)
+- [2025-02-11 - First TA Meeting](#2025-02-11---First-TA-Meeting)
+- [2025-02-13 - Project Proposal and Parts List](#2025-02-13---Project-Proposal-and-Parts-List)
+- [2025-02-14 - First Machine Shop Visit](#2025-02-14---First-Machine-Shop-Visit)
+- [2025-02-17 - Proposal Review](#2025-02-17---Proposal-Review)
+- [2025-02-23 - Group Meeting through Discord Call](#2025-02-23---Group-Meeting-through-Discord-Call)
+- [2025-02-25 - Weekly TA Meeting](#2025-02-25---Weekly-TA-Meeting)
+- [2025-02-27 - Proposal Revision](#2025-02-27---Proposal-Revision)
+- [2025-03-02 - Weekend Meeting](#2025-03-02---Weekend-Meeting)
+- [2025-03-03 - Schematic Design Complete](#2025-03-03---Schematic-Design-Complete)
+- [2025-03-04 - Weekly TA Meeting](#2025-03-04---Weekly-TA-Meeting)
+- [2025-03-05 - First PCB Design Complete](#2025-03-05---First-PCB-Design-Complete)
+- [2025-03-06 - Finished the Design Document](#2025-03-06---Finished-the-Design-Document)
+- [2025-03-11 - Weekly TA Meeting](#2025-03-11---Weekly-TA-Meeting)
+- [2025-03-12 - Breadboard Demo](#2025-03-12---Breadboard-Demo)
+- [2025-03-13 - Second Order for PCBs](#2025-03-13---Second-Order-for-PCBs)
+- [2025-03-14 - Gerber File Passed](#2025-03-14---Gerber-File-Passed)
+- [2025-03-25 - Weekly TA Meeting](#2025-03-25---Weekly-TA-Meeting)
+- [2025-04-01 - Weekly TA Meeting](#2025-04-01---Weekly-TA-Meeting)
+- [2025-04-07 - Digikey Order](#2025-04-07---Digikey-Order)
+- [2025-04-08 - Weekly TA Meeting](#2025-04-08---Weekly-TA-Meeting)
+- [2025-04-10 - PCB Order arrived](#2025-04-10---PCB-Order-arrived)
+- [2025-04-13 - Group Meeting](#2025-04-13---Group-Meeting)
+- [2025-04-14 - Meeting with Rui](#2025-04-14---Meeting-with-Rui)
+- [2025-04-15 - Weekly TA Meeting](#2025-04-15---Weekly-TA-Meeting)
+- [2025-04-16 - Final PCB Order Made](#2025-04-16---Final-PCB-Order-Made)
+- [2025-04-18 - Machine Shop Visit](#2025-04-18---Machine-Shop-Visit)
+- [2025-04-19 - Preparation for Mock Demo](#2025-04-19---Preparation-for-Mock-Demo)
+- [2025-04-21 - Preparation for Mock Demo](#2025-04-21---Preparation-for-Mock-Demo)
+- [2025-04-25 - Final PCB Arrived](#2025-04-25---Final-PCB-Arrived)
+- [2025-04-26 - Soldering the Final PCB](#2025-04-26---Soldering-the-Final-PCB)
+- [2025-04-27 - Soldering the Final PCB](#2025-04-27---Soldering-the-Final-PCB)
+- [2025-04-28 - Final Demo](#2025-04-28---Final-Demo)
+- [2025-05-01 - Creation of the Final Presentation](#2025-05-01---Creation-of-the-Final-Presentation)
+- [2025-05-02 - Mock Presentation](#2025-05-02---Mock-Presentation)
+- [2025-05-04 - Editing the Presentation Slides](#2025-05-04---Editing-the-Presentation-Slides)
+- [2025-05-05 - Final Presentation](#2025-05-05---Final-Presentation)
+- [2025-05-07 - Final Paper](#2025-05-07---Final-Paper)
 
 
 ## 2025-01-27 - Project Ideas
@@ -82,10 +105,7 @@ We finished the design on the schematic today. ![image](https://github.com/user-
 We added more components into the parts list. The components we added are op amps, voltage inverter, voltage regulator, and some resistors. Harry also put in orders for our sensors.
 
 ## 2025-03-04 - Weekly TA Meeting
-Today we met with Rui and gave him an update on the project. Rui reminded us that the Teamwork evaluation assignment was due March 5th and the Design Document due March 7th. He also reminded us that the breadboard demo was next week and that there was no weekly meeting that week.
-
-## 2025-03-04 - Started The Design Document
-I started on the design document and copied the proposal document over to the design document.
+Today we met with Rui and gave him an update on the project. Rui reminded us that the Teamwork evaluation assignment was due March 5th and the Design Document due March 7th. He also reminded us that the breadboard demo was next week and that there was no weekly meeting that week. I started on the design document and copied the proposal document over to the design document.
 
 ## 2025-03-05 - First PCB Design Complete
 Haokai finished designing the PCB. This is what it looked like: ![image](https://github.com/user-attachments/assets/b6cfe350-11b8-4c44-a7a9-fdf20da2ae82)
@@ -146,7 +166,6 @@ I soldered the ESP32 development board to the PCB for the Mock Demo. After the m
 ## 2025-04-25 - Final PCB Arrived
 Haokai started soldering the final PCB.
 
-
 ## 2025-04-26 - Soldering the Final PCB
 Our final PCB came in and I checked that Haokai's soldering was not good so I grabbed a new PCB and started from scratch.![image](https://github.com/user-attachments/assets/c16931a7-cc61-4540-85d9-a0896cdfd485)
 ![image](https://github.com/user-attachments/assets/8f492287-4abc-43f5-9a88-0acf6879d91a)
@@ -154,8 +173,6 @@ I soldered on the ESP32 chip, micro USB B, and op amps. <img width="385" alt="im
 
 ## 2025-04-27 - Soldering the Final PCB
 I finished soldering our final PCB. I soldered on the resistors, capacitors, and most of the through-hole components. ![image](https://github.com/user-attachments/assets/b1972968-d3c5-4ba8-8f8a-55e186807786)
-
-## 2025-04-27 - Testing the Final PCB
 We tested the final PCB and the only sensor that worked is the temperature sensor. The other sensors had issues outputting the data. I suspect it is because we do not have the CP2102 chip to help convert micro USB B data to serial to the ESP32. We used the digital multimeter in the lab to check the outputs and inputs of each of the sensors' voltage, and the data was all within the range voltage of 3.0-3.6 volts. I then doubled check my soldering for each of the components and found nothing wrong.
 
 ## 2025-04-28 - Final Demo
