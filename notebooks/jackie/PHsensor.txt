@@ -1,0 +1,48 @@
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+#include <BluetoothSerial.h>
+
+// Next 3 lines check if Bluetooth is properly enabled
+#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
+#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
+#endif
+
+
+#define VREF 5.0
+#define SCOUNT 40
+
+#define PH_SENSOR_PIN 34
+
+
+int analogBuffer[SCOUNT]; // store the analog value in the array, read from ADC
+int analogBufferTemp[SCOUNT];
+int analogBufferIndex = 0,copyIndex = 0;
+float averageVoltage = 0,tdsValue = 0,temperature = 25;
+
+//Set bluetooth class object
+BluetoothSerial SerialBT;
+
+
+void setup(void) {
+
+  delay(150);
+  Serial.begin(115200); // Set baudrate, may need to change for each device
+  SerialBT.begin("ESP32_WT"); // Bluetooth device name
+  Serial.println("Device ready to connect");
+  
+  pinMode(PH_SENSOR_PIN, INPUT);
+
+}
+
+
+
+String getPH() {
+  int raw = analogRead(PH_SENSOR_PIN);
+  float voltage = raw * (3.3 / 4095.0); // Dividing 3.3V by 4095.0 gives the voltage per bit step
+
+  // Calibration-based mapping (adjust based on your buffer solution readings)
+  float ph = 7 + ((voltage - 2.5) / -0.18);  // Reverse slope if needed
+
+  return String(ph, 2);
+}
