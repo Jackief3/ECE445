@@ -1,0 +1,157 @@
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <BluetoothSerial.h>
+
+// Next 3 lines check if Bluetooth is properly enabled
+#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
+#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
+#endif
+
+#define TEMP_WIRE_BUS 14 // Tempature sensor data is connected to GPIO 14
+#define PH_SENSOR_PIN 35 // Ph sensor data is connected to GPIO 34
+#define TDS_SENSOR_PIN 32 // TDS sensor data is connected to GPIO 32
+#define TURB_SENSOR_PIN 35 // Turbidity sensor is connected to GPIO ## TODO: Change this value
+
+#define VREF 5.0
+#define SCOUNT 40
+
+int analogBuffer[SCOUNT]; // store the analog value in the array, read from ADC
+int analogBufferTemp[SCOUNT];
+int analogBufferIndex = 0,copyIndex = 0;
+float averageVoltage = 0,tdsValue = 0,temperature = 25;
+
+//Set bluetooth class object
+BluetoothSerial SerialBT;
+
+// Set up connection for tempature sensor to the Dallas functions
+OneWire tempWire(TEMP_WIRE_BUS);
+DallasTemperature tempSensor(&tempWire);
+
+void setup(void) {
+
+  delay(150);
+  Serial.begin(115200);       // Set baudrate
+  SerialBT.begin("ESP32_WT"); // Bluetooth device name
+  Serial.println("Device ready to connect");
+  
+  tempSensor.begin(); // Intialize the temp sensor
+  pinMode(TDS_SENSOR_PIN, INPUT);  // Set the tds pin to input only
+  pinMode(PH_SENSOR_PIN, INPUT);   // Set the pH pin to input only
+  pinMode(TURB_SENSOR_PIN, INPUT); // Set the turbidity pin to input
+}
+
+
+void loop(void) { 
+
+  // Get sensor readings and sent them over bluetooth
+  String temp = getTemp();
+  String TDS = getTDS();
+  String turb = getTurbidity();
+  String ph = getPH();
+  SerialBT.print("T" + temp + "S" + TDS + "B" + turb + "P" + ph);
+}
+
+String getTemp(void) {
+
+  // Initialze output
+  String output;
+
+  // Request the temperature and wait for the device to get it
+  tempSensor.requestTemperatures(); 
+  delay(750); // Need delay for sensor to reply, 
+
+  // Read the temp from the sensor
+  float tempC = tempSensor.getTempCByIndex(0);
+
+  // Check if a valid temp read occured
+  if(tempC == -127.00) {
+
+  output = String(-127.00); //"Faild to read from Waterproof DS18B20 Sensor";
+  }
+  else {
+    temperature = tempC;
+    output = String(tempC, 3);
+  }
+
+  // Wait until we call this again
+  delay(1000);
+
+  return output; // Return the temp or error
+ }
+
+ String getTDS(void) {
+
+  static unsigned long analogSampleTimepoint = millis();
+  if(millis()-analogSampleTimepoint > 40U) { //every 40 milliseconds,read the analog value from the ADC
+
+    analogSampleTimepoint = millis();
+    analogBuffer[analogBufferIndex] = analogRead(TDS_SENSOR_PIN); //read the analog value and store into the buffer
+    analogBufferIndex++;
+    if(analogBufferIndex == SCOUNT)
+      analogBufferIndex = 0;
+  }
+  static unsigned long printTimepoint = millis();
+  if(millis()-printTimepoint > 800U) {
+    printTimepoint = millis();
+    for(copyIndex=0;copyIndex<SCOUNT;copyIndex++)
+      analogBufferTemp[copyIndex]= analogBuffer[copyIndex];
+
+    averageVoltage = getMedianNum(analogBufferTemp,SCOUNT) * (float)VREF/ 4095.0; // read the analog value more stable by the median filtering algorithm, and convert to voltage value
+    Serial.print(averageVoltage,0);
+    float compensationCoefficient=1.0+0.02*(temperature-25.0); //temperature compensation formula: fFinalResult(25^C) = fFinalResult(current)/(1.0+0.02*(fTP-25.0));
+    float compensationVolatge=averageVoltage/compensationCoefficient; //temperature compensation
+    tdsValue=(133.42*compensationVolatge*compensationVolatge*compensationVolatge - 255.86*compensationVolatge*compensationVolatge + 857.39*compensationVolatge)*0.5; //convert voltage value to tds value
+
+    // Serial.print("TDS Value:");
+    // Serial.print(tdsValue,0);
+    // Serial.println("ppm");
+  }
+
+  return String(tdsValue);
+}
+
+// Get the average of all tds readings
+int getMedianNum(int bArray[], int iFilterLen) {
+
+  int bTab[iFilterLen];
+  for (byte i = 0; i<iFilterLen; i++)
+    bTab[i] = bArray[i];
+
+  int i, j, bTemp;
+  for (j = 0; j < iFilterLen - 1; j++) {
+    for (i = 0; i < iFilterLen - j - 1; i++) {
+      if (bTab[i] > bTab[i + 1]) {
+        bTemp = bTab[i];
+        bTab[i] = bTab[i + 1];
+        bTab[i + 1] = bTemp;
+      }
+    }
+  }
+
+  if ((iFilterLen & 1) > 0)
+    bTemp = bTab[(iFilterLen - 1) / 2];
+
+  else
+    bTemp = (bTab[iFilterLen / 2] + bTab[iFilterLen / 2 - 1]) / 2;
+
+  return bTemp;
+}
+
+String getTurbidity() {
+
+  int sensorValue = analogRead(TURB_SENSOR_PIN);// Read input from Turbidity sensor
+  float voltage = sensorValue * (3.3 / 4095.0); // Convert the analog reading (which goes from 0 - 4096) to a voltage (0 - 3.3V): 
+  return String(voltage); // print out the value you read: 
+  delay(500); 
+}
+
+String getPH() {
+
+  int raw = analogRead(PH_SENSOR_PIN); // Read input from pH sensor
+  float voltage = raw * (3.3 / 4095.0); // Dividing 3.3V by 4095.0 gives the voltage per bit step
+
+  // Calibration-based mapping (adjust based on your buffer solution readings)
+  float ph = 7 + ((voltage - 2.5) / -0.18);  // Reverse slope if needed
+
+  return String(ph, 2);
+}

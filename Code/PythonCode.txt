@@ -1,0 +1,297 @@
+# Importing libraries
+#import asyncio
+import time
+#import serial
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+import matplotlib.dates as mdates
+import datetime
+#from bleak import BleakScanner
+import socket
+import random
+
+#from serial.tools import list_ports //made need in the future, not working
+
+# Set up connection to esp32
+s = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
+s.connect(('14:2B:2F:D7:43:7E', 1))
+
+fig, axs = plt.subplots(4,1)
+xtime, ytemp, yturb, ytds, ypH = [], [], [], [], []
+templ, = axs[0].plot([],[])
+turbl, = axs[1].plot([],[])
+tdsl, = axs[2].plot([],[])
+pHl, = axs[3].plot([],[])
+
+fig.tight_layout()
+
+axs[0].set_title('Temperature Plot')
+axs[1].set_title('Turbidity Plot')
+axs[2].set_title('TDS Plot')
+axs[3].set_title('pH Plot')
+
+axs[0].set_ylabel('Celsius')
+axs[1].set_ylabel('NTU') # Nephelometric Turbidity Units 
+axs[2].set_ylabel('ppm')
+axs[3].set_ylabel('pH Level')
+
+axs[0].set_ylim(0,40)
+axs[1].set_ylim(0,50)
+axs[2].set_ylim(0,1000)
+axs[3].set_ylim(0,14)
+
+date_format = mdates.DateFormatter('%H:%M:%S')
+axs[0].xaxis.set_major_formatter(date_format)
+axs[1].xaxis.set_major_formatter(date_format)
+axs[2].xaxis.set_major_formatter(date_format)
+axs[3].xaxis.set_major_formatter(date_format)
+
+dataSize = 256
+
+tempA = np.zeros(256)
+turbA = np.zeros(256)
+tdsA = np.zeros(256)
+pHA = np.zeros(256)
+timeA = np.zeros(256)
+
+tempLoc = 0
+turbLoc = 0
+tdsLoc = 0
+pHLoc = 0
+
+start = 0
+end = 0
+
+cntData = 0
+maxData = 10
+
+count = 0
+
+def list_to_number(digits):
+    num_str = ''.join(map(str, digits))
+    return float(num_str)
+
+def recv_msg():
+
+    global s # Import socket
+
+    global tempA # Import sensor arrays
+    global turbA # |
+    global tdsA  # |
+    global pHA   # |
+    global timeA # |
+
+    global start
+    global end
+
+    sock = s
+
+    while True:
+        chunk = sock.recv(1024)
+
+        if not chunk:
+            return None  # Connection closed
+        message = chunk.decode()
+        if message[0] == "T":
+            
+            tempLoc = 0
+            for i in range(len(message)):
+                if message[i] == "S":
+                    tdsLoc = i
+                elif message[i] == "B":
+                    turbLoc = i
+                elif message[i] == "P":
+                    pHLoc = i
+                elif message[i] == "T" and i > 0:
+                    return None
+
+            tempA[end] = list_to_number(message[tempLoc+1:tdsLoc])
+            tdsA[end] = list_to_number(message[tdsLoc+1:turbLoc])
+            turbA[end] = list_to_number(message[turbLoc+1:pHLoc])
+            pHA[end] = list_to_number(message[pHLoc+1::])
+            timeA[end] = time.time()
+            
+            print("TDS: " + message[tdsLoc+1:turbLoc])
+            #print(tempA[end])
+            #print(turbA[end])
+
+            end = (end + 1) % 256
+        
+            if end == start:
+                start = (start + 1) % 256
+
+            return 0
+
+def fake_recv_msg():
+  
+    global tempA # Import sensor arrays
+    global turbA # |
+    global tdsA  # |
+    global pHA   # |
+    global timeA # |
+
+    global start
+    global end
+
+    tempA[end] = random.randint(10,30)
+    tdsA[end] = random.randint(10,30)
+    turbA[end] = random.randint(10,30)
+    pHA[end] = random.randint(10,30)
+    #timeA[end] = datetime.datetime.now()
+    timeA[end] = time.time()
+
+    end = (end + 1) % 256
+        
+    if end == start:
+        start = (start + 1) % 256
+
+    return
+
+# Hold cur time in nice values
+#now = datetime.datetime.now()
+#times = [now + datetime.timedelta(seconds=i) for i in range(len(tempArray[0]))]
+
+def animate(i):
+
+    global tempA # Import sensor arrays
+    global turbA # |
+    global tdsA  # |
+    global pHA   # |
+    global timeA # |
+
+    global start
+    global end
+    global cntData
+    global maxData
+
+    global count
+
+    count = count + 1
+    #if count > 20:
+    #    return
+        
+    '''
+    cntData = cntData + 1
+    print(cntData)
+    if(maxData < cntData):
+        axs[0].cla()
+        axs[1].cla()
+        axs[2].cla()
+        axs[3].cla()
+        cntData = 0
+        '''
+
+    result = recv_msg()
+    while(result != 0):
+        result = recv_msg()
+    #fake_recv_msg()
+
+    xtime.append(datetime.datetime.fromtimestamp(timeA[end - 1]))
+    ytemp.append(tempA[end - 1])
+    yturb.append(turbA[end - 1])
+    ytds.append(tdsA[end - 1])
+    ypH.append(pHA[end - 1])
+
+    '''
+    if(len(xtime) > 10):
+        xtime = xtime[1:]
+        ytemp = ytemp[1:]
+        yturb = yturb[1:]
+        ytds = ytds[1:]
+        ypH = ypH[1:]
+    '''
+
+    #xtime = xtime[1:]
+
+    templ.set_data(xtime, ytemp)
+    turbl.set_data(xtime, yturb)
+    tdsl.set_data(xtime, ytds)
+    pHl.set_data(xtime, ypH)
+
+    axs[0].relim()
+    axs[0].autoscale_view()
+    axs[1].relim()
+    axs[1].autoscale_view()
+    axs[2].relim()
+    axs[2].autoscale_view()
+    axs[3].relim()
+    axs[3].autoscale_view()
+
+    return templ, turbl, tdsl, pHl
+
+def orgArray(nparr):
+    global start
+    nparr = np.concatenate((nparr[start:], nparr[:start]))
+    last_ele = nparr[-1]
+    nparr = np.insert(nparr[:-1], 0, last_ele)
+    return nparr
+
+def predictTemp():
+    return
+
+# Main function to run right now to read data
+def main():
+
+    global timeA
+    global tempA
+    global turbA
+    global tdsA
+    global pHA
+
+    ani = animation.FuncAnimation(fig, animate, interval = 1000, repeat_delay = 10, save_count=16)
+        
+    plt.show()
+
+    timeA = orgArray(timeA)
+    tempA = orgArray(tempA)
+    turbA = orgArray(turbA)
+    tdsA = orgArray(tdsA)
+
+
+    ''' Old code for checking orgArray worked
+    for i in range(len(timeA) - 1):
+        if timeA[i] > timeA[i + 1]:
+            print("bad")
+            print(i)
+        if timeA[i] < timeA[0]:
+            print("really bad")
+        if timeA[i + 1] == timeA[0]:
+            print("also bad")
+    '''
+
+    np.save('time_data', timeA)
+    np.save('temp_data', tempA)
+    np.save('turb_data', turbA)
+    np.save('tds_data', tdsA)
+    np.save('pH_data', pHA)
+
+    #ani.save('dots.gif', writer='imagemagick')
+
+    '''
+
+    global s
+    for i in range(10):
+        recv_msg(s)
+    
+    s.close()
+    for i in range(1):
+        print(tempA) # Used for debugging
+
+        tempTime = [datetime.datetime.fromtimestamp(ts) for ts in tempA[0]]
+        #tempTime = tempTime.strftime("%H:%M:%S")
+
+        # Plot the data
+        plt.plot(tempTime,tempA[1])
+   
+        plt.xlabel("Time")
+        plt.ylabel("Temperature in °C")
+
+        plt.ylim(25,35)
+
+        plt.show()
+
+        time.sleep(10)
+'''
+        
+main() # run main function
